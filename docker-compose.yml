@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build: ./flask
+    container_name: flask_container
+    ports:
+      - "8080:5000"
+    environment:
+      FLASK_APP: ${FLASK_APP}
+      FLASK_ENV: ${FLASK_ENV}
+    networks:
+      - app-network
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+#  postgres-db:
+#    image: postgres
+#    restart: always
+#    env_file:
+#      - .env
+#    volumes:
+#      - ./postgres/init/:/docker-entrypoint-initdb.d
+#    ports:
+#      - 5432:5432
+  postgres-db:
+    build: ./postgres
+    container_name: postgres_container
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - app-network
+    ports:
+      - "5432:5432"  # For development purposes, should be disabled in production.
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres-db
+    ports:
+      - "8000:8080"
+    networks:
+      - app-network
+    depends_on:
+      - postgres-db
+
+  scrapy:
+    build: ./scrapy
+    container_name: scrapy_container
+    networks:
+      - app-network
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  app-network:
+
+volumes:
+  postgres-data:
