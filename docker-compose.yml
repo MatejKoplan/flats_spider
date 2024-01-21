@@ -19,15 +19,6 @@ services:
       retries: 3
       start_period: 40s
 
-#  postgres-db:
-#    image: postgres
-#    restart: always
-#    env_file:
-#      - .env
-#    volumes:
-#      - ./postgres/init/:/docker-entrypoint-initdb.d
-#    ports:
-#      - 5432:5432
   postgres-db:
     build: ./postgres
     container_name: postgres_container
@@ -40,7 +31,7 @@ services:
     networks:
       - app-network
     ports:
-      - "5432:5432"  # For development purposes, should be disabled in production.
+      - "5432:5432"
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
@@ -60,9 +51,9 @@ services:
     depends_on:
       - postgres-db
 
-  scrapy:
-    build: ./scrapy
-    container_name: scrapy_container
+  spider:
+    build: ./spider
+    container_name: scrapy_spider
     networks:
       - app-network
     restart: on-failure
