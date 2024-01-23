@@ -6,9 +6,12 @@ services:
     container_name: flask_container
     ports:
       - "8080:5000"
+    env_file:
+      - .env
     environment:
       FLASK_APP: ${FLASK_APP}
       FLASK_ENV: ${FLASK_ENV}
+      ENVIRONMENT: production
     networks:
       - app-network
     restart: on-failure

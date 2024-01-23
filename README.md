@@ -1,9 +1,15 @@
 Some notes on how a real project would be improved in no particular order:
 
-## 1. .env file shouldn't be committed into git.
+## 1. Environments:
+### 1.1 .env file shouldn't be committed into git.
 Configuration files with secrets should never be committed, as they pose a security risk.
 Instead, we should use an example.env and instruct the user to copy it and enter their credentials manually. 
 This also allows each user to have their own credentials, which can be revoked if necessary.
+
+In this case I committed it, as per "homework" instructions. 
+
+## 1.2 Separate configurations for development, production, etc.
+We should use different .env files for development, production, etc. 
 
 ## 2. Scaling
 When visiting pages on a large scale, scaling needs to be considered.
@@ -23,3 +29,16 @@ Scaling of the API then becomes very easy, for beginner needs, we can just use a
 This also helps by allowing us to have specialized systems for certain workloads, such as machine learning, where we need a GPU and we preferably want to use it as efficiently as possible.
 3. Storing a large frontier. The frontier is a list of URLs that are in queue to be visited and can often exceed the size of system RAM if the scraping system reaches a high enough URL count. 
 This is often solved by storing the frontier on a disk, or sharing it between multiple systems.
+
+## 5. Project architecture
+Some services have shared code, such as the Flat object. They need to connect to the database in the same way, etc.
+In this case one of two things would make sense:
+- merge the projects and change the docker run command
+- keep the projects separate and expose the common logic to those services.
+
+Both approaches have merits. The first case seems simpler for smaller projects, but can have negative downsides, such as a larger docker image due to more dependencies. 
+It is also more forgiving when implementing changes to the data model, as there is no need to sync any library version, etc.
+
+The second way is more appropriate for larger projects, where separation of concerns is of higher priority. 
+This allows the teams to only focus on the modules they're working with. In such case everything else they're only using, is only exposed through a public interface.
+
