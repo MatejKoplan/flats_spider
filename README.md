@@ -1,3 +1,7 @@
+# How to View Data
+Since the example site is blocking scraping requests, the easiest way to view the data is to install the project for development and run tests (`flats_project/spider/tests/test_flats.py`).
+This will fill the example data into the database, allowing you to view the data.
+
 # Some notes on how a real project would be improved in no particular order:
 
 ## 1. Environment Management

@@ -9,16 +9,6 @@ from db import connector
 Base = declarative_base()
 
 
-def insert_example_data():
-    house_title = "House 1"
-    image_urls = ["https://d18-a.sdn.cz/d_18/c_img_QO_K7/YdFBbqR.jpeg?fl=res,400,300,3|shr,,20|jpg,90", "https://d18-a.sdn.cz/d_18/c_img_QR_MK/rPfBbt8.jpeg?fl=res,400,300,3|shr,,20|jpg,90"]
-    flat = Flat(title=house_title, images=image_urls)
-    Flat.insert_flats_with_images([flat])
-
-
-insert_example_data()
-
-
 @contextmanager
 def session_scope():
     """Provide a transactional scope around a series of operations."""
