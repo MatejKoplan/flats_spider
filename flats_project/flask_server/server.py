@@ -3,7 +3,6 @@ from db.models import Flat, session_scope
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def hello_world():
     with session_scope() as session:

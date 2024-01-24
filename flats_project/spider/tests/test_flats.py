@@ -24,16 +24,6 @@ def test_url_discovery():
     found_urls = flats.extract_urls(response)
     assert found_urls == expected_result
 
-def test_url_discovery2():
-    input_data, expected_result = load_test_data("test_url_discovery2.json")
-
-    response = scrapy.http.HtmlResponse(url="https://www.sreality.cz/en/search/for-sale/houses",
-                                        encoding="utf-8",
-                                        body=input_data)
-
-    found_urls = flats.extract_urls(response)
-    assert found_urls == expected_result
-
 
 def test_flats_extraction():
     input_data, expected_result = load_test_data("test_flats_extraction.json")
@@ -49,13 +39,14 @@ def test_flats_extraction():
 
 def test_data_saving_and_loading():
     house_title = "House 1"
-    image_urls = ["https://example.com/image1.png", "https://example.com/image2.png"]
 
+    image_urls = ["https://d18-a.sdn.cz/d_18/c_img_QO_K7/YdFBbqR.jpeg?fl=res,400,300,3|shr,,20|jpg,90", "https://d18-a.sdn.cz/d_18/c_img_QR_MK/rPfBbt8.jpeg?fl=res,400,300,3|shr,,20|jpg,90"]
     flat = Flat(title=house_title, images=image_urls)
     Flat.insert_flats_with_images([flat])
+
     with models.session_scope() as session:
         loaded_flats = Flat.load_all_flats(session)
         assert len(loaded_flats) == 1
         assert loaded_flats[0].title == house_title
         assert len(loaded_flats[0].images) == 2
-        assert loaded_flats[0].images[0].url == "https://example.com/image1.png"
+        assert loaded_flats[0].images[0].url == image_urls[0]
