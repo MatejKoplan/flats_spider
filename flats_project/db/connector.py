@@ -3,14 +3,14 @@ import sys
 
 import sqlalchemy as db
 
-from sqlalchemy.orm import sessionmaker
-from flats_project.config import config
+# from sqlalchemy.orm import sessionmaker
+from config import config
 
 connection_string = f"postgresql://{config.POSTGRES_USER}:{config.POSTGRES_PASSWORD}@{config.POSTGRES_HOST}:{config.POSTGRES_PORT}/{config.POSTGRES_DB}"
 engine = db.create_engine(connection_string)
 connection = engine.connect()
-Session = sessionmaker(bind=engine)
-session = Session()
+# Session = sessionmaker(bind=engine)
+# session = Session()
 
 
 def close_database_connection(signal, frame):

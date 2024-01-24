@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flats Listing</title>
+</head>
+<body>
+    <h1>Flats Listing</h1>
+    <table border="1">
+        <tr>
+            <th>Title</th>
+            <th>Images</th>
+        </tr>
+        {% for flat in flats %}
+        <tr>
+            <td>{{ flat.title }}</td>
+            <td>
+                {% for image in flat.images %}
+                    <img src="{{ image.url }}" alt="Image" style="width:100px;">
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

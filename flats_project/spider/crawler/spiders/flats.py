@@ -1,7 +1,7 @@
 import scrapy
 
 from typing import Generator
-from flats_project.db.models import Flat
+from db.models import Flat
 
 
 class FlatsSpider(scrapy.Spider):

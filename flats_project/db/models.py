@@ -1,10 +1,9 @@
 from contextlib import contextmanager
-
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, scoped_session, sessionmaker, joinedload, Session
 
-from flats_project.db import connector
+from db import connector
 
 Base = declarative_base()
 
@@ -26,7 +25,7 @@ def session_scope():
 class Flat(Base):
     __tablename__ = 'flats'
     id = Column(Integer, primary_key=True)
-    title = Column(String)
+    title = Column(String, unique=True)
 
     # Relationship to enable flat.images to return all associated images
     images = relationship("Image", backref="flat")
@@ -59,10 +58,7 @@ class Image(Base):
     __tablename__ = 'images'
     id = Column(Integer, primary_key=True)
     flat_id = Column(Integer, ForeignKey('flats.id'))
-    url = Column(String)
-
-    # def __dict__(self):
-    #     return {"url": self.url}
+    url = Column(String, unique=True)
 
     def insert(self):
         with session_scope() as session:

@@ -1,11 +1,13 @@
 FROM python:3.10
-WORKDIR /usr/src/app
+WORKDIR "/flats_project"
+
+ENV PYTHONPATH "${PYTHONPATH}:/flats_project"
+
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY config .
-COPY db .
-COPY spider .
+COPY . .
 
-CMD ["ls"]
-#CMD ["scrapy", "crawl", "spidername"]
+WORKDIR /flats_project/spider/crawler/spiders
+
+CMD ["scrapy", "crawl", "flats"]

@@ -2,8 +2,9 @@ import scrapy
 import json
 
 from flats_project.spider.crawler.spiders import flats
-from flats_project.db.models import Flat, Image
+from flats_project.db.models import Flat
 from flats_project.db import models
+
 
 def load_test_data(filename: str):
     data_file_path = 'flats_project/spider/tests/data/' + filename
@@ -39,7 +40,6 @@ def test_flats_extraction():
 def test_data_saving_and_loading():
     house_title = "House 1"
     image_urls = ["https://example.com/image1.png", "https://example.com/image2.png"]
-
 
     flat = Flat(title=house_title, images=image_urls)
     Flat.insert_flats_with_images([flat])

@@ -23,7 +23,7 @@ Scrapy provides a middleware with which, we can use a headless browser instead o
 ## 4. Scaling the project
 If the desire is to scrape on a larger scale, then there are several challenges that need to be addressed. 
 1. Distributing the load. As the number of sites we need to process increases, it will be necessary to parallelize the scraping process. 
-Scrapy uses multiple threads, but only one core by deafault. Using different approaches such as python's multiprocessing, docker's --scale, or kubernetes for very large scales, we can scale the extraction process arbitrarily. 
+Scrapy uses multiple threads, but only one core by default. Using different approaches such as python's multiprocessing, docker's --scale, or kubernetes for very large scales, we can scale the extraction process arbitrarily. 
 2. Separating the scraping and visiting. If the data processing is heavy, we can lighten the load on Scrapy by separating the visit component from the processing. 
 If we set up an API where we can send the resulting pages to be processed, we can heavily increase the concurrency of the Scrapy requests. 
 Scaling of the API then becomes very easy, for beginner needs, we can just use a `docker-compose up --scale=n` command and go from there. 
@@ -46,6 +46,7 @@ The second way is more appropriate for larger projects, where separation of conc
 It allows teams to only focus on the modules they're working with. 
 In such case everything else they're only using, is only exposed through a public interface. 
 This scales better when teams get larger and there are many services.
+
 
 # Development
 1. create venv (Pycharm CTRL+SHIFT+A -> select python interpreter -> follow setup for new venv)

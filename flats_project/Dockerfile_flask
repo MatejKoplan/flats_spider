@@ -1,10 +1,11 @@
 FROM python:3.10
-WORKDIR "/app"
+WORKDIR "/flats_project"
 
-# Production server dependency
-RUN pip install gunicorn
+ENV PYTHONPATH "${PYTHONPATH}:/flats_project"
+
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY flask_server .
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+COPY . .
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "flask_server.server:app"]
