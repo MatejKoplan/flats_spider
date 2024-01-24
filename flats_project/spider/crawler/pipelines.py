@@ -8,6 +8,6 @@
 from itemadapter import ItemAdapter
 
 
-class LuxonisCrawlerPipeline:
+class FlatsCrawlerPipeline:
     def process_item(self, item, spider):
         return item

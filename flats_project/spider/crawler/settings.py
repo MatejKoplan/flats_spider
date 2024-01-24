@@ -1,4 +1,4 @@
-# Scrapy settings for luxonis_crawler project
+# Scrapy settings for flats_crawler project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,14 +7,14 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "luxonis_crawler"
+BOT_NAME = "flats_crawler"
 
-SPIDER_MODULES = ["luxonis_crawler.spiders"]
-NEWSPIDER_MODULE = "luxonis_crawler.spiders"
+SPIDER_MODULES = ["flats_crawler.spiders"]
+NEWSPIDER_MODULE = "flats_crawler.spiders"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = "luxonis_crawler (+http://www.yourdomain.com)"
+#USER_AGENT = "flats_crawler (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -45,13 +45,13 @@ COOKIES_ENABLED = False
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    "luxonis_crawler.middlewares.LuxonisCrawlerSpiderMiddleware": 543,
+#    "flats_crawler.middlewares.FlatsCrawlerSpiderMiddleware": 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    "luxonis_crawler.middlewares.LuxonisCrawlerDownloaderMiddleware": 543,
+#    "flats_crawler.middlewares.FlatsCrawlerDownloaderMiddleware": 543,
 #}
 
 # Enable or disable extensions
@@ -63,7 +63,7 @@ COOKIES_ENABLED = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    "luxonis_crawler.pipelines.LuxonisCrawlerPipeline": 300,
+#    "flats_crawler.pipelines.FlatsCrawlerPipeline": 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
