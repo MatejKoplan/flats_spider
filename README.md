@@ -1,6 +1,6 @@
-Some notes on how a real project would be improved in no particular order:
+# Some notes on how a real project would be improved in no particular order:
 
-## 1. Environments:
+## 1. Environments management
 ### 1.1 .env file shouldn't be committed into git.
 Configuration files with secrets should never be committed, as they pose a security risk.
 Instead, we should use an example.env and instruct the user to copy it and enter their credentials manually. 
@@ -8,7 +8,7 @@ This also allows each user to have their own credentials, which can be revoked i
 
 In this case I committed it, as per "homework" instructions. 
 
-## 1.2 Separate configurations for development, production, etc.
+### 1.2 Separate configurations for development, production, etc.
 We should use different .env files for development, production, etc. 
 
 ## 2. Scaling
@@ -17,7 +17,8 @@ When visiting pages on a large scale, scaling needs to be considered.
 ## 3. Ensuring correct results:
 Scrapy by default uses HTTP requests to visit the websites. 
 While this works fine most of the time, it can lead to incorrect results 
-when pages are written as Single Page Applications or rely on JavaScript to load more data later on.
+when pages are written as Single Page Applications or rely on JavaScript to load more data later on. 
+Scrapy provides a middleware with which, we can use a headless browser instead of using raw HTTP requests. 
 
 ## 4. Scaling the project
 If the desire is to scrape on a larger scale, then there are several challenges that need to be addressed. 
@@ -46,7 +47,14 @@ It allows teams to only focus on the modules they're working with.
 In such case everything else they're only using, is only exposed through a public interface. 
 This scales better when teams get larger and there are many services.
 
+# Development
+1. create venv (Pycharm CTRL+SHIFT+A -> select python interpreter -> follow setup for new venv)
+2. Open new terminal and install requirements.txt:
+`pip install -r flats_project/requirements.txt`
+3. To connect to database you will need to `docker-compose up` and make sure it's exposed (uncomment ports section in postgres service docker-compose)
 
-## Running tests:
+Congratulations, you are ready to run the project!
+
+### Running tests:
 When creating the run config for your tests, make sure to set the environment to DEVELOPMENT, to load the environment variables from the .env directly.
 In production, they will be provided by docker-compose. 
