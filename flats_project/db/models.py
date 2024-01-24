@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, scoped_session, sessionmaker, joinedload
+from sqlalchemy.orm import relationship, scoped_session, sessionmaker, joinedload, Session, session
 
 from flats_project.db import connector
 
@@ -48,25 +48,15 @@ class Flat(Base):
     @staticmethod
     def insert_flats_with_images(flats: list["Flat"]):
         with session_scope() as session:
-            session.bulk_save_objects(flats)
-
-            images = []
             for flat in flats:
+                session.add(flat)
                 for image in flat.images:
-                    image.flat_id = flat.id
-                    images.append(image)
-
-            # Bulk insert images
-            if images:
-                session.bulk_save_objects(images)
+                    session.add(image)
             session.commit()
 
     @staticmethod
     def load_all_flats():
-        with session_scope() as session:
-            # Use joinedload for eager loading of the images relationship
-            flats = session.query(Flat).options(joinedload(Flat.images)).all()
-            return flats
+        return connector.session.query(Flat).options(joinedload(Flat.images)).all()
 
 
 class Image(Base):
