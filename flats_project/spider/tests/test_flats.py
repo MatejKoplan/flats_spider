@@ -7,7 +7,7 @@ from flats_project.db import models
 
 
 def load_test_data(filename: str):
-    data_file_path = 'flats_project/spider/tests/data/' + filename
+    data_file_path = 'spider/tests/data/' + filename
     with open(data_file_path, 'r', encoding="utf-8") as file:
         data = json.load(file)
 
@@ -16,6 +16,16 @@ def load_test_data(filename: str):
 
 def test_url_discovery():
     input_data, expected_result = load_test_data("test_url_discovery.json")
+
+    response = scrapy.http.HtmlResponse(url="https://www.sreality.cz/en/search/for-sale/houses",
+                                        encoding="utf-8",
+                                        body=input_data)
+
+    found_urls = flats.extract_urls(response)
+    assert found_urls == expected_result
+
+def test_url_discovery2():
+    input_data, expected_result = load_test_data("test_url_discovery2.json")
 
     response = scrapy.http.HtmlResponse(url="https://www.sreality.cz/en/search/for-sale/houses",
                                         encoding="utf-8",
