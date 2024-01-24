@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, scoped_session, sessionmaker, joinedload, Session, session
+from sqlalchemy.orm import relationship, scoped_session, sessionmaker, joinedload, Session
 
 from flats_project.db import connector
 
@@ -41,10 +41,6 @@ class Flat(Base):
             Image.insert_multiple(self.images)
             session.commit()
 
-    # def __dict__(self):
-    #     return {"title": self.title, "images": [dict(image) for image in self.images]}
-
-
     @staticmethod
     def insert_flats_with_images(flats: list["Flat"]):
         with session_scope() as session:
@@ -55,8 +51,8 @@ class Flat(Base):
             session.commit()
 
     @staticmethod
-    def load_all_flats():
-        return connector.session.query(Flat).options(joinedload(Flat.images)).all()
+    def load_all_flats(session: Session):
+        return session.query(Flat).options(joinedload(Flat.images)).all()
 
 
 class Image(Base):
