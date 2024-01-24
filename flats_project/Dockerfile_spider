@@ -3,8 +3,14 @@ WORKDIR "/flats_project"
 
 ENV PYTHONPATH "${PYTHONPATH}:/flats_project"
 
+# I run scrapy_playwright install before other sections, to significantly speed up the build process.
+RUN pip install scrapy_playwright==0.0.34
+RUN playwright install chromium
+RUN playwright install-deps
+
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+
 
 COPY . .
 

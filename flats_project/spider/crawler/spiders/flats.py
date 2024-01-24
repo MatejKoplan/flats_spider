@@ -12,7 +12,13 @@ class FlatsSpider(scrapy.Spider):
             "https://www.sreality.cz/en/search/for-sale/houses"
         ]
         for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+            yield scrapy.FormRequest(
+                url=url,
+                formdata={"foo": "bar"},
+                meta={"playwright": True, "playwright_include_page": True},
+                callback=self.parse
+            )
+            # yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response: scrapy.http.Response) -> Generator[scrapy.Request, None, None]:
         # Extract possible new URLs and data from page
