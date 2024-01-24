@@ -5,6 +5,6 @@ WORKDIR "/app"
 RUN pip install gunicorn
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY . .
+COPY flask_server .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]

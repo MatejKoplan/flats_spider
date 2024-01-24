@@ -1,16 +1,7 @@
 import scrapy
 
-
-class Flat:
-    name: str
-    image_urls: list[str]
-
-    def __init__(self, name: str, image_urls: list[str]):
-        self.name = name
-        self.image_urls = image_urls
-
-    def save_to_db(self):
-        pass
+from typing import Generator
+from flats_project.db.models import Flat
 
 
 class FlatsSpider(scrapy.Spider):
@@ -23,11 +14,10 @@ class FlatsSpider(scrapy.Spider):
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
-    def parse(self, response):
+    def parse(self, response: scrapy.http.Response) -> Generator[scrapy.Request, None, None]:
+        # Extract possible new URLs and data from page
         urls = extract_urls(response)
-        flats = extract_flats(response)
-        # TODO:
-        #  Save to DB
+        Flat.insert_flats_with_images(extract_flats(response))
 
         #  Add sorted URLs to frontier
         for url in urls:
@@ -42,7 +32,7 @@ def extract_flats(response: scrapy.http.Response) -> list[Flat]:
     for property_card in property_cards:
         image_urls = property_card.css("a > img::attr(src)").getall()
         posting_name = property_card.css(".info.clear.ng-scope > div > span > h2 > a > span::text").get()
-        flats.append(Flat(name=posting_name, image_urls=image_urls))
+        flats.append(Flat(title=posting_name, images=image_urls))
 
     return flats
 

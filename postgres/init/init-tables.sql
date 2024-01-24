@@ -1,5 +1,11 @@
 CREATE TABLE IF NOT EXISTS flats (
     id SERIAL PRIMARY KEY,
-    column1 VARCHAR(50),
-    column2 INT
+    title VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS images (
+    id SERIAL PRIMARY KEY,
+    flat_id INTEGER NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (flat_id) REFERENCES flats(id) ON DELETE CASCADE
 );
