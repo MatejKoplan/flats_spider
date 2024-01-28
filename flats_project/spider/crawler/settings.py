@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = "spiders.flats"
 #USER_AGENT = "flats (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
+ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -95,9 +95,22 @@ FEED_EXPORT_ENCODING = "utf-8"
 USER_AGENT = """user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36"""
 
 
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler': 800,
+}
+
+# LOG_LEVEL = 'DEBUG'
+
 DOWNLOAD_HANDLERS = {
     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
 }
 # and switch to asyncio reactor as playwright is asynchronous
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+
+
+AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_START_DELAY = 5
+AUTOTHROTTLE_MAX_DELAY = 60
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+AUTOTHROTTLE_DEBUG = False

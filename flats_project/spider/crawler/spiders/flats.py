@@ -1,4 +1,7 @@
+import os
 import scrapy
+from scrapy_playwright.page import PageMethod
+import logging
 
 from typing import Generator
 from db.models import Flat
@@ -12,22 +15,44 @@ class FlatsSpider(scrapy.Spider):
             "https://www.sreality.cz/en/search/for-sale/houses"
         ]
         for url in urls:
-            yield scrapy.FormRequest(
+            # Using scrapy.Request with Playwright meta instead of scrapy.FormRequest
+            yield scrapy.Request(
                 url=url,
-                formdata={"foo": "bar"},
-                meta={"playwright": True, "playwright_include_page": True},
+                meta={
+                    "playwright": True,
+                    "playwright_include_page": True,
+                    "playwright_page_methods": [
+                        PageMethod("wait_for_selector", ".dir-property-list"),
+                    ]
+                },
                 callback=self.parse
             )
-            # yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response: scrapy.http.Response) -> Generator[scrapy.Request, None, None]:
         # Extract possible new URLs and data from page
         urls = extract_urls(response)
-        Flat.insert_flats_with_images(extract_flats(response))
+        flats = extract_flats(response)
+        logging.debug(f"found {len(flats)} flats")
+        if flats:
+            Flat.insert_flats_with_images(flats)
+            logging.debug("inserted into db")
+        else:
+            # Save HTML to a file if no flats found
+            filename = f"no_flats_found_{response.url.split('/')[-1]}.html"
+            self.save_html(response.text, filename)
+            logging.debug(f"Saved page HTML to {filename}")
 
-        #  Add sorted URLs to frontier
+        # Add sorted URLs to frontier
         for url in urls:
             yield scrapy.Request(url, callback=self.parse)
+
+    @staticmethod
+    def save_html(html_content, filename):
+        """ Save the HTML content to a file """
+
+        file_path = os.path.join('/data', filename)
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(html_content)
 
 
 def extract_flats(response: scrapy.http.Response) -> list[Flat]:
