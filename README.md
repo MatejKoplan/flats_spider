@@ -1,10 +1,29 @@
 # Run:
 run `docker-compose up --build`, wait and open localhost:8000 to see the results.
 
+Note: This is only an example and should NEVER be run in production or in any significant scale. 
+The "obey robots.txt" flag is disabled for demonstration purposes and should be respected!
+
 # Some notes on how a real project would be improved in no particular order:
 
-## 1. Environment Management
-### 1.1 `.env` file shouldn't be committed into Git
+## 1. Fix loading pages beyond first page of houses
+The domain sreality.cz seems to have some scraping protections implemented. When requesting data with HTTP requests, or with a browser marked as a spider, the requests returned empty pages.
+
+I managed to improve on this with playwright, now https://www.sreality.cz/en/search/for-sale/houses loads correctly. 
+
+Using browserless/chrome, I managed to load pages beyond https://www.sreality.cz/en/search/for-sale/houses , but it was time to finish the project.
+If I kept on improving this, this would be the first improvement I would do.
+
+
+### 1.1 Obey robots.txt
+To make scraping of this domain work I had to ignore robots.txt, but this flag must be respected. 
+It expresses the wishes of the site owners and in this case forbids the crawling of any listings for any spider. 
+
+Considering this project will only be run to show my skills in web scraping, 
+
+
+## 2. Environment Management
+### 2.1 `.env` file shouldn't be committed into Git
 Configuration files with secrets should never be committed, as they pose a security risk.
 Instead, we should use an `example.env` and instruct the user to copy it and enter their credentials manually. 
 This also allows each user to have their own credentials, which can be revoked if necessary.
@@ -13,16 +32,16 @@ In this case, I only committed it, so the `docker-compose up` command works out 
 
 I repeat, this is a very bad practice. 
 
-### 1.2 Separate configurations for development, production, etc.
+### 2.2 Separate configurations for development, production, etc.
 We should use different `.env` files for development, production, etc.
 
-## 2. Ensuring Correct Results
+## 3. Ensuring Correct Results
 Scrapy, by default, uses HTTP requests to visit websites. 
 While this works fine most of the time, it can lead to incorrect results 
 when pages are written as Single Page Applications or rely on JavaScript to load more data later on. 
 Scrapy provides middleware with which we can use a headless browser instead of using raw HTTP requests. 
 
-## 3. Scaling the Project (development and organisational considerations)
+## 4. Scaling the Project (development and organisational considerations)
 If the desire is to scrape on a larger scale, then there are several challenges that need to be addressed:
 1. Distributing the load. As the number of sites we need to process increases, it will be necessary to parallelize the scraping process. 
 Scrapy uses multiple threads, but only one core by default. Using different approaches such as Python's multiprocessing, Docker's `--scale`, or Kubernetes for very large scales, we can scale the extraction process arbitrarily. 
@@ -33,7 +52,7 @@ This also helps by allowing us to have specialized systems for certain workloads
 3. Storing a large frontier. The frontier is a list of URLs that are in the queue to be visited and can often exceed the size of system RAM if the scraping system reaches a high enough URL count. 
 This is often solved by storing the frontier on a disk, or sharing it between multiple systems.
 
-## 4. Project Structure
+## 5. Project Structure
 Some services have shared code, such as the Flat object. I decided it's best to share the configuration and other common logic in this case, but this does mean that the projects aren't as separate as they could otherwise be. 
 In this case, one of two things would make sense:
 - Have the projects in the same folder with the common logic in the `pyproject` folder. 
@@ -49,25 +68,17 @@ It allows teams to only focus on the modules they're working with.
 In such a case, everything else they're only using is only exposed through a public interface. 
 This scales better when teams get larger and there are many services.
 
-## 5. Database Shouldn't Be Exposed Outside of Docker Network
+## 6. Database Shouldn't Be Exposed Outside of Docker Network
 I left the port exposed to the outside for development purposes. 
 This is a bad security practice; all services should be as closed off as possible, to reduce exposure to malicious actors.
 
-## 6. Pagination & better requests
+## 7. Pagination & better requests
 Loading all items at once can be taxing on the user's system and our service. 
 It's better to introduce pagination when the number of items can get significant.
 
-## 7. Additional development services
+## 8. Additional development services
 It's important to make development easier. To help with database management, debugging data insertion etc., I also added a service Adminer. 
 It exposes the database via localhost:8000.
-
-## 8. Fix loading pages beyond first page of houses
-The domain sreality.cz seems to have some scraping protections implemented. When requesting data with HTTP requests, or with a browser marked as a spider, the requests returned empty pages.
-
-I managed to improve on this with playwright, now https://www.sreality.cz/en/search/for-sale/houses loads correctly. 
-
-Using browserless/chrome, I managed to load pages beyond https://www.sreality.cz/en/search/for-sale/houses , but it was time to finish the project.
-If I kept on improving this, this would be the first improvement I would do.
 
 ## 9. And many more,
 but this document is already long enough.  
