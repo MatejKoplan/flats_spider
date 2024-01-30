@@ -70,7 +70,7 @@ Using browserless/chrome, I managed to load pages beyond https://www.sreality.cz
 If I kept on improving this, this would be the first improvement I would do.
 
 ## 9. And many more,
-but this document is already long enough. And we should note, that this is good enough for now. No need to over-engineer! 
+but this document is already long enough.  
 
 # Development
 This project uses Python 3.10.
