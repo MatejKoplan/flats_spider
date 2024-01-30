@@ -1,10 +1,12 @@
 import os
 import scrapy
-from scrapy_playwright.page import PageMethod
 import logging
 
+from scrapy_playwright.page import PageMethod
 from typing import Generator
+
 from db.models import Flat
+from config import config
 
 
 class FlatsSpider(scrapy.Spider):
@@ -28,7 +30,7 @@ class FlatsSpider(scrapy.Spider):
                 callback=self.parse
             )
 
-    def parse(self, response: scrapy.http.Response) -> Generator[scrapy.Request, None, None]:
+    def parse(self, response: scrapy.http.Response, **kwargs) -> Generator[scrapy.Request, None, None]:
         # Extract possible new URLs and data from page
         urls = extract_urls(response)
         flats = extract_flats(response)
@@ -36,7 +38,7 @@ class FlatsSpider(scrapy.Spider):
         if flats:
             Flat.insert_flats_with_images(flats)
             logging.debug("inserted into db")
-        else:
+        elif config.ENVIRONMENT == config.DEVELOPMENT_ENV:
             # Save HTML to a file if no flats found
             filename = f"no_flats_found_{response.url.split('/')[-1]}.html"
             self.save_html(response.text, filename)
@@ -47,7 +49,7 @@ class FlatsSpider(scrapy.Spider):
             yield scrapy.Request(url, callback=self.parse)
 
     @staticmethod
-    def save_html(html_content, filename):
+    def save_html(html_content: str, filename: str) -> None:
         """ Save the HTML content to a file """
 
         file_path = os.path.join('/data', filename)

@@ -6,7 +6,7 @@ from flats_project.db.models import Flat
 from flats_project.db import models
 
 
-def load_test_data(filename: str):
+def load_test_data(filename: str) -> tuple[dict, dict]:
     data_file_path = 'spider/tests/data/' + filename
     with open(data_file_path, 'r', encoding="utf-8") as file:
         data = json.load(file)

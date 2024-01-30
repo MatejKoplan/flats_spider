@@ -1,6 +1,5 @@
-# How to View Data
-Since the example site is blocking scraping requests, the easiest way to view the data is to install the project for development and run tests (`flats_project/spider/tests/test_flats.py`).
-This will fill the example data into the database, allowing you to view the data.
+# Run:
+run `docker-compose up --build`, wait and open localhost:8000 to see the results.
 
 # Some notes on how a real project would be improved in no particular order:
 
@@ -10,12 +9,14 @@ Configuration files with secrets should never be committed, as they pose a secur
 Instead, we should use an `example.env` and instruct the user to copy it and enter their credentials manually. 
 This also allows each user to have their own credentials, which can be revoked if necessary.
 
-In this case, I committed it, as per "homework" instructions. 
+In this case, I only committed it, so the `docker-compose up` command works out of the box.
+
+I repeat, this is a very bad practice. 
 
 ### 1.2 Separate configurations for development, production, etc.
 We should use different `.env` files for development, production, etc.
 
-## 2. Scaling
+## 2. Scaling the scraping (processing power considerations)
 When visiting pages on a large scale, scaling needs to be considered.
 
 ## 3. Ensuring Correct Results
@@ -24,7 +25,7 @@ While this works fine most of the time, it can lead to incorrect results
 when pages are written as Single Page Applications or rely on JavaScript to load more data later on. 
 Scrapy provides middleware with which we can use a headless browser instead of using raw HTTP requests. 
 
-## 4. Scaling the Project
+## 4. Scaling the Project (development and organisational considerations)
 If the desire is to scrape on a larger scale, then there are several challenges that need to be addressed:
 1. Distributing the load. As the number of sites we need to process increases, it will be necessary to parallelize the scraping process. 
 Scrapy uses multiple threads, but only one core by default. Using different approaches such as Python's multiprocessing, Docker's `--scale`, or Kubernetes for very large scales, we can scale the extraction process arbitrarily. 
@@ -54,6 +55,17 @@ This scales better when teams get larger and there are many services.
 ## 6. Database Shouldn't Be Exposed Outside of Docker Network
 I left the port exposed to the outside for development purposes. 
 This is a bad security practice; all services should be as closed off as possible, to reduce exposure to malicious actors.
+
+## 7. Pagination & better requests
+Loading all items at once can be taxing on the user's system and our service. 
+It's better to introduce pagination when the number of items can get significant.
+
+## 8. Additional development services
+It's important to make development easier. To help with database management, debugging data insertion etc., I also added a service Adminer. 
+It exposes the database via localhost:8000.
+
+## 9. And many more,
+but this document is already long enough.
 
 # Development
 1. Create a venv (PyCharm CTRL+SHIFT+A -> select Python interpreter -> follow the setup for a new venv).
