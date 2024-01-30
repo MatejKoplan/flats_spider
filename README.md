@@ -61,6 +61,14 @@ It's better to introduce pagination when the number of items can get significant
 It's important to make development easier. To help with database management, debugging data insertion etc., I also added a service Adminer. 
 It exposes the database via localhost:8000.
 
+## 8. Fix loading pages beyond first page of houses
+This site seems to have some scraping protections implemented. When requesting data with HTTP requests, or with a browser marked as a spider, the requests returned empty pages.
+
+I managed to improve on this with playwright, now https://www.sreality.cz/en/search/for-sale/houses loads correctly. 
+
+Using browserless/chrome, I managed to load pages beyond https://www.sreality.cz/en/search/for-sale/houses , but it was time to finish the project.
+If I kept on improving this, this would be the first improvement I would do.
+
 ## 8. And many more,
 but this document is already long enough. And we should note, that this is good enough for now. No need to over-engineer! 
 
