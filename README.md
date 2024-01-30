@@ -62,7 +62,7 @@ It's important to make development easier. To help with database management, deb
 It exposes the database via localhost:8000.
 
 ## 8. Fix loading pages beyond first page of houses
-This site seems to have some scraping protections implemented. When requesting data with HTTP requests, or with a browser marked as a spider, the requests returned empty pages.
+The domain sreality.cz seems to have some scraping protections implemented. When requesting data with HTTP requests, or with a browser marked as a spider, the requests returned empty pages.
 
 I managed to improve on this with playwright, now https://www.sreality.cz/en/search/for-sale/houses loads correctly. 
 
