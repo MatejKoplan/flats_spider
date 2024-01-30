@@ -69,7 +69,7 @@ I managed to improve on this with playwright, now https://www.sreality.cz/en/sea
 Using browserless/chrome, I managed to load pages beyond https://www.sreality.cz/en/search/for-sale/houses , but it was time to finish the project.
 If I kept on improving this, this would be the first improvement I would do.
 
-## 8. And many more,
+## 9. And many more,
 but this document is already long enough. And we should note, that this is good enough for now. No need to over-engineer! 
 
 # Development
