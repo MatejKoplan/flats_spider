@@ -65,6 +65,8 @@ It exposes the database via localhost:8000.
 but this document is already long enough. And we should note, that this is good enough for now. No need to over-engineer! 
 
 # Development
+This project uses Python 3.10.
+
 1. Create a venv (PyCharm CTRL+SHIFT+A -> select Python interpreter -> follow the setup for a new venv).
 2. Open a new terminal and install `requirements.txt`:
 `pip install -r flats_project/requirements.txt`
