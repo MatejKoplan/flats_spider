@@ -1,8 +1,10 @@
 # Run:
-run `docker-compose up --build`, wait and open localhost:8000 to see the results.
+WARNING: This project doesn't gather subpages, as that is forbidden by robots.txt.
 
-Note: This is only an example and should NEVER be run in production or in any significant scale. 
-The "obey robots.txt" flag is disabled for demonstration purposes and should be respected!
+To make it work regardless, you must open `flats_project/spider/crawler/settings.py` and change the flag `ROBOTSTXT_OBEY` to `False`. 
+Please note however, that ignoring robots.txt might be considered unethical or even illegal. This is also why I chose to not enable it.
+
+To start the project, run `docker-compose up --build`, wait and open localhost:8000 to see the results.
 
 # Some notes on how a real project would be improved in no particular order:
 
