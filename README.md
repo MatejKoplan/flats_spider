@@ -16,16 +16,13 @@ I repeat, this is a very bad practice.
 ### 1.2 Separate configurations for development, production, etc.
 We should use different `.env` files for development, production, etc.
 
-## 2. Scaling the scraping (processing power considerations)
-When visiting pages on a large scale, scaling needs to be considered.
-
-## 3. Ensuring Correct Results
+## 2. Ensuring Correct Results
 Scrapy, by default, uses HTTP requests to visit websites. 
 While this works fine most of the time, it can lead to incorrect results 
 when pages are written as Single Page Applications or rely on JavaScript to load more data later on. 
 Scrapy provides middleware with which we can use a headless browser instead of using raw HTTP requests. 
 
-## 4. Scaling the Project (development and organisational considerations)
+## 3. Scaling the Project (development and organisational considerations)
 If the desire is to scrape on a larger scale, then there are several challenges that need to be addressed:
 1. Distributing the load. As the number of sites we need to process increases, it will be necessary to parallelize the scraping process. 
 Scrapy uses multiple threads, but only one core by default. Using different approaches such as Python's multiprocessing, Docker's `--scale`, or Kubernetes for very large scales, we can scale the extraction process arbitrarily. 
@@ -36,7 +33,7 @@ This also helps by allowing us to have specialized systems for certain workloads
 3. Storing a large frontier. The frontier is a list of URLs that are in the queue to be visited and can often exceed the size of system RAM if the scraping system reaches a high enough URL count. 
 This is often solved by storing the frontier on a disk, or sharing it between multiple systems.
 
-## 5. Project Structure
+## 4. Project Structure
 Some services have shared code, such as the Flat object. I decided it's best to share the configuration and other common logic in this case, but this does mean that the projects aren't as separate as they could otherwise be. 
 In this case, one of two things would make sense:
 - Have the projects in the same folder with the common logic in the `pyproject` folder. 
@@ -52,20 +49,20 @@ It allows teams to only focus on the modules they're working with.
 In such a case, everything else they're only using is only exposed through a public interface. 
 This scales better when teams get larger and there are many services.
 
-## 6. Database Shouldn't Be Exposed Outside of Docker Network
+## 5. Database Shouldn't Be Exposed Outside of Docker Network
 I left the port exposed to the outside for development purposes. 
 This is a bad security practice; all services should be as closed off as possible, to reduce exposure to malicious actors.
 
-## 7. Pagination & better requests
+## 6. Pagination & better requests
 Loading all items at once can be taxing on the user's system and our service. 
 It's better to introduce pagination when the number of items can get significant.
 
-## 8. Additional development services
+## 7. Additional development services
 It's important to make development easier. To help with database management, debugging data insertion etc., I also added a service Adminer. 
 It exposes the database via localhost:8000.
 
-## 9. And many more,
-but this document is already long enough.
+## 8. And many more,
+but this document is already long enough. And we should note, that this is good enough for now. No need to over-engineer! 
 
 # Development
 1. Create a venv (PyCharm CTRL+SHIFT+A -> select Python interpreter -> follow the setup for a new venv).
